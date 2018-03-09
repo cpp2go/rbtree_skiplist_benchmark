@@ -10,6 +10,7 @@ var (
 	rbmap    *RbTree
 	skiplist *SkipList
 	gomap    map[uint32]*int
+	sortlist SortList
 )
 
 func init() {
@@ -31,6 +32,9 @@ func init() {
 		gomap[uint32(i)] = &i
 	}
 
+	for i := 0; i < 1000; i++ {
+		sortlist.Insert(i)
+	}
 }
 
 func Benchmark_RbTreeNew(b *testing.B) {
@@ -90,6 +94,16 @@ func Benchmark_MapInsert(b *testing.B) {
 	}
 }
 
+func Benchmark_SortListInsert(b *testing.B) {
+
+	sortlist := SortList{}
+
+	for i := 0; i < b.N; i++ {
+
+		sortlist.Insert(i)
+	}
+}
+
 func Benchmark_RbTreeLoad(b *testing.B) {
 
 	for i := 0; i < b.N; i++ {
@@ -98,7 +112,6 @@ func Benchmark_RbTreeLoad(b *testing.B) {
 		if !ok {
 
 		}
-
 	}
 }
 
@@ -119,13 +132,20 @@ func Benchmark_MapLoad(b *testing.B) {
 	}
 }
 
+func Benchmark_SortListLoad(b *testing.B) {
+
+	for i := 0; i < b.N; i++ {
+		_ = sortlist.Load(i)
+	}
+}
+
 func Benchmark_RbTreeRange(b *testing.B) {
 
 	for i := 0; i < b.N; i++ {
 
 		rbmap.Range(func(key ngx_rbtree_key_t, data interface{}) {
 			//fmt.Printf("key = %d value = %v\n", key, data)
-			_ = &key
+			_ = key
 		})
 
 	}
@@ -134,10 +154,9 @@ func Benchmark_RbTreeRange(b *testing.B) {
 func Benchmark_SkipListRange(b *testing.B) {
 
 	for i := 0; i < b.N; i++ {
-
 		skiplist.Range(func(key int, data interface{}) {
 			//fmt.Printf("key = %d value = %v\n", key, data)
-			_ = &key
+			_ = key
 		})
 	}
 }
@@ -148,7 +167,25 @@ func Benchmark_MapRange(b *testing.B) {
 
 		for k, _ := range gomap {
 			//fmt.Printf("key = %d value = %v\n", k, v)
-			_ = &k
+			_ = k
 		}
+	}
+}
+
+func Benchmark_SortListRange(b *testing.B) {
+
+	for i := 0; i < b.N; i++ {
+		/*
+			sortlist.Range(func(key int, value interface{}) {
+				//fmt.Printf("key = %d value = %v\n", key, data)
+				_ = key
+			})
+		*/
+
+		for i := 0; i < len(sortlist.list); i++ {
+			node := sortlist.list[i]
+			_ = node.key
+		}
+
 	}
 }
