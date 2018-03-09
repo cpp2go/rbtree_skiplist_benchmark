@@ -1,5 +1,6 @@
 # rbtree_skiplist_benchmark
 
+
 goos: linux
 goarch: amd64
 Benchmark_RbTreeNew-16          20000000               111 ns/op
