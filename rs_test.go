@@ -185,6 +185,7 @@ func Benchmark_SortListRange(b *testing.B) {
 		for i := 0; i < len(sortlist.list); i++ {
 			node := sortlist.list[i]
 			_ = node.key
+			//_ = node.value.(int)
 		}
 
 	}

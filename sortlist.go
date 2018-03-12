@@ -75,28 +75,38 @@ func (this *SortList) Insert(key int) {
 		index = mid + 1
 	}
 
-	tmplist := append([]SortNode{}, this.list[index:]...)
+	/*
+		tmplist := append([]SortNode{}, this.list[index:]...)
 
-	this.list = append(this.list[:index], SortNode{
+		this.list = append(this.list[:index], SortNode{
+			key:   key,
+			value: lsize,
+		})
+
+		this.list = append(this.list, tmplist...)
+	*/
+	this.list = append(this.list, SortNode{})
+
+	copy(this.list[index+1:], this.list[index:])
+
+	this.list[index] = SortNode{
 		key:   key,
 		value: lsize,
-	})
-
-	this.list = append(this.list, tmplist...)
-
+	}
 }
 
 func (this *SortList) Load(key int) *SortNode {
+	lsize := len(this.list)
+	if lsize == 0 {
+		return nil
+	}
 	var (
-		lsize = len(this.list)
-		low   = 0
-		high  = lsize - 1
+		low  = 0
+		high = lsize - 1
+		mid  int
 	)
 	for low <= high {
-		mid := (low + high) >> 1
-		if mid >= lsize {
-			return nil
-		}
+		mid = (low + high) >> 1
 		node := &this.list[mid]
 		if node.key == key {
 			return node
@@ -108,6 +118,32 @@ func (this *SortList) Load(key int) *SortNode {
 		}
 	}
 	return nil
+}
+
+func (this *SortList) Delete(key int) bool {
+	lsize := len(this.list)
+	if lsize == 0 {
+		return false
+	}
+	var (
+		low  = 0
+		high = lsize - 1
+		mid  int
+	)
+	for low <= high {
+		mid = (low + high) >> 1
+		node := &this.list[mid]
+		if node.key == key {
+			this.list = append(this.list[:mid], this.list[mid+1:]...)
+			return true
+		}
+		if node.key > key {
+			high = mid - 1
+		} else {
+			low = mid + 1
+		}
+	}
+	return false
 }
 
 func (this *SortList) Range(f func(key int, value interface{})) {
