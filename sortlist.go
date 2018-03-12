@@ -48,7 +48,7 @@ func (this *SortList) Insert(key int) {
 	}
 
 	for low <= high {
-		mid = (low + high) / 2
+		mid = (low + high) >> 1
 
 		node := &this.list[mid]
 
@@ -93,7 +93,7 @@ func (this *SortList) Load(key int) *SortNode {
 		high  = lsize - 1
 	)
 	for low <= high {
-		mid := (low + high) / 2
+		mid := (low + high) >> 1
 		if mid >= lsize {
 			return nil
 		}
