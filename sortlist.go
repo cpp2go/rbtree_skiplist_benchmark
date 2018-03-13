@@ -77,21 +77,28 @@ func (this *SortList) Insert(key int) {
 
 	/*
 		tmplist := append([]SortNode{}, this.list[index:]...)
-
 		this.list = append(this.list[:index], SortNode{
 			key:   key,
 			value: lsize,
 		})
-
 		this.list = append(this.list, tmplist...)
 	*/
-	this.list = append(this.list, SortNode{})
 
-	copy(this.list[index+1:], this.list[index:])
+	/*
+		this.list = append(this.list, SortNode{})
+		copy(this.list[index+1:], this.list[index:])
+		this.list[index] = SortNode{
+			key:   key,
+			value: lsize,
+		}
+	*/
 
-	this.list[index] = SortNode{
+	this.list = append(this.list, SortNode{
 		key:   key,
 		value: lsize,
+	})
+	for i := lsize; i > index; i-- {
+		this.list[i], this.list[i-1] = this.list[i-1], this.list[i]
 	}
 }
 
