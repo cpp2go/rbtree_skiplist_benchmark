@@ -10,7 +10,7 @@ var (
 	rbmap    *RbTree
 	skiplist *SkipList
 	gomap    map[uint32]*int
-	sortlist SortList
+	sortlist *SortList
 )
 
 func init() {
@@ -35,6 +35,7 @@ func init() {
 		gomap[uint32(v)] = &v
 	}
 
+	sortlist = &SortList{}
 	for i := 0; i < 1000; i++ {
 		v := rand.Int()
 		sortlist.Insert(v)
@@ -46,7 +47,7 @@ func Benchmark_RbTreeNew(b *testing.B) {
 	for i := 0; i < b.N; i++ {
 
 		rbmap := NewRbTree()
-		_ = &rbmap
+		_ = rbmap
 	}
 }
 
@@ -55,7 +56,7 @@ func Benchmark_SkipListNew(b *testing.B) {
 	for i := 0; i < b.N; i++ {
 
 		skiplist := NewSkipList()
-		_ = &skiplist
+		_ = skiplist
 	}
 }
 
@@ -64,7 +65,16 @@ func Benchmark_MapNew(b *testing.B) {
 	for i := 0; i < b.N; i++ {
 
 		gomap := make(map[uint32]*int)
-		_ = &gomap
+		_ = gomap
+	}
+}
+
+func Benchmark_SortListNew(b *testing.B) {
+
+	for i := 0; i < b.N; i++ {
+
+		sortlist := SortList{}
+		_ = sortlist
 	}
 }
 
