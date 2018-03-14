@@ -19,21 +19,25 @@ func init() {
 
 	rbmap = NewRbTree()
 	for i := 0; i < 1000; i++ {
-		rbmap.Store(ngx_rbtree_key_t(i), &i)
+		v := rand.Int()
+		rbmap.Store(ngx_rbtree_key_t(v), &v)
 	}
 
 	skiplist = NewSkipList()
 	for i := 0; i < 1000; i++ {
-		skiplist.Insert(i)
+		v := rand.Int()
+		skiplist.Insert(v)
 	}
 
 	gomap = make(map[uint32]*int)
 	for i := 0; i < 1000; i++ {
-		gomap[uint32(i)] = &i
+		v := rand.Int()
+		gomap[uint32(v)] = &v
 	}
 
 	for i := 0; i < 1000; i++ {
-		sortlist.Insert(i)
+		v := rand.Int()
+		sortlist.Insert(v)
 	}
 }
 
@@ -69,8 +73,8 @@ func Benchmark_RbTreeInsert(b *testing.B) {
 	rbmap := NewRbTree()
 
 	for i := 0; i < b.N; i++ {
-
-		rbmap.Store(ngx_rbtree_key_t(i), &i)
+		v := rand.Int() % 1000
+		rbmap.Store(ngx_rbtree_key_t(v), &v)
 	}
 }
 
@@ -79,8 +83,8 @@ func Benchmark_SkipListInsert(b *testing.B) {
 	skiplist := NewSkipList()
 
 	for i := 0; i < b.N; i++ {
-
-		skiplist.Insert(i)
+		v := rand.Int() % 1000
+		skiplist.Insert(v)
 	}
 }
 
@@ -89,8 +93,8 @@ func Benchmark_MapInsert(b *testing.B) {
 	gomap := make(map[uint32]*int)
 
 	for i := 0; i < b.N; i++ {
-
-		gomap[uint32(i)] = &i
+		v := rand.Int() % 1000
+		gomap[uint32(v)] = &v
 	}
 }
 
@@ -99,16 +103,16 @@ func Benchmark_SortListInsert(b *testing.B) {
 	sortlist := SortList{}
 
 	for i := 0; i < b.N; i++ {
-
-		sortlist.Insert(i)
+		v := rand.Int() % 1000
+		sortlist.Insert(v)
 	}
 }
 
 func Benchmark_RbTreeLoad(b *testing.B) {
 
 	for i := 0; i < b.N; i++ {
-
-		_, ok := rbmap.Load(ngx_rbtree_key_t(i))
+		v := rand.Int()
+		_, ok := rbmap.Load(ngx_rbtree_key_t(v))
 		if !ok {
 
 		}
@@ -118,14 +122,16 @@ func Benchmark_RbTreeLoad(b *testing.B) {
 func Benchmark_SkipListLoad(b *testing.B) {
 
 	for i := 0; i < b.N; i++ {
-		_ = skiplist.Search(i)
+		v := rand.Int()
+		_ = skiplist.Search(v)
 	}
 }
 
 func Benchmark_MapLoad(b *testing.B) {
 
 	for i := 0; i < b.N; i++ {
-		_, ok := gomap[uint32(i)]
+		v := rand.Int()
+		_, ok := gomap[uint32(v)]
 		if !ok {
 
 		}
@@ -135,7 +141,8 @@ func Benchmark_MapLoad(b *testing.B) {
 func Benchmark_SortListLoad(b *testing.B) {
 
 	for i := 0; i < b.N; i++ {
-		_ = sortlist.Load(i)
+		v := rand.Int()
+		_ = sortlist.Load(v)
 	}
 }
 
